@@ -1,0 +1,96 @@
+-------check api using postman--------
+runserver http://localhost:8000/employeeList/ 
+copy this 
+and paste on postman and method must be get and just click on send 
+same for postman http://localhost:8000/employeeList/ and method must be post and just click on send 
+
+--------pip install django-cors-headers-----------
+add this into setting .py in apps
+'corsheaders'
+
+------add corsheaders into middleware in settings.py-------
+'corsheaders.middleware.CorsMiddleware',
+
+---Add this into setting .py in CORS_ALLOW_ALL_ORIGINS = True-----
+
+
+then back to the main folder and create react folder
+npm create vite@latest 
+cd drf_app
+npm install
+npm run dev
+
+crete js folder inside src and create api.js file
+
+import axios from "axios"
+
+const API = axios.create({
+    baseURL: "http://127.0.0.1:8000"
+});
+
+export default API;
+
+create EmployeeList.jsx file inside src folder
+
+import React, { useEffect, useState } from "react";
+import API from "../api";
+
+function EmployeeList() {
+
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(() => {
+        getEmployees();
+    }, []);
+
+    const getEmployees = async () => {
+        const response = await API.get("employees/");
+        setEmployees(response.data);
+    };
+
+    return (
+        <div>
+
+            <h2>Employee List</h2>
+
+            <ul>
+                {employees.map(emp => (
+                    <li key={emp.id}>
+                        {emp.name} - {emp.salary}
+                    </li>
+                ))}
+
+            </ul>
+
+        </div>
+    );
+}
+
+
+
+
+-------------JWT TOKEN------------------
+
+step1
+pip install djangorestframework-simplejwt
+
+step2
+add this into setting .py in apps
+'rest_framework_simplejwt',
+
+step3
+add this into setting .py in middleware
+'rest_framework_simplejwt.middleware.JWTAuthentication',
+
+step4
+add this into setting .py in REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+bearer is used to send token in header like json format return data
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMTI4NjI5LCJpYXQiOjE3NzMxMjgzMjksImp0aSI6ImU5YTMzODdmOTk0ZTQ4MTFhYTZiZjgzMGExYWUxNWFiIiwidXNlcl9pZCI6IjIifQ.tRB4OHNnsbqf_E60R6FhkIeoZ2tuIixfuzWgxJXmqv4
